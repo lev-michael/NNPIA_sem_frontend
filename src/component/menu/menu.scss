@@ -1,0 +1,37 @@
+.menu{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-color: #121212;
+    display: flex;
+    justify-items: center;
+    width: 100%;
+    overflow: hidden;
+
+    &__item {
+        display: flex;
+        max-height: 100%;
+        color: white;
+        align-items: center;
+        padding: 1.2rem;
+        cursor: pointer;
+        text-decoration: none;
+        & > * {
+          margin-left: 0.5rem;
+        }
+    
+        &_active-link {
+          font-weight: bold;
+          border-bottom: 3px solid;
+          display: block;
+          padding-top: 22px;
+          height: 100%;
+          white-space: nowrap;
+        }
+    
+        &:hover{
+          background-color: rgba(128, 128, 128, 0.1);
+          transition: 0.2s ease-in-out;
+        }
+      }
+}

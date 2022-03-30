@@ -1,0 +1,229 @@
+$padding-element: 0.5rem;
+$margin-element: 0.5rem;
+
+.margin-element {
+    margin: $margin-element;
+  
+    &--large {
+      margin: $margin-element * 2;
+    }
+  
+    &--vertical {
+      margin-top: $margin-element;
+      margin-bottom: $margin-element;
+  
+      &-large {
+        margin-top: $margin-element * 2;
+        margin-bottom: $margin-element * 2;
+      }
+    }
+  
+    &--horizontal {
+      margin-right: $margin-element;
+      margin-left: $margin-element;
+  
+      &-large {
+        margin-right: $margin-element * 2;
+        margin-left: $margin-element * 2;
+      }
+    }
+  
+    &--top {
+      margin-top: $margin-element;
+  
+      &-large {
+        margin-top: $margin-element * 2;
+      }
+  
+      &-negative {
+        margin-top: (-$margin-element);
+      }
+  
+      &-small {
+        margin-top: $margin-element / 2;
+      }
+    }
+  
+    &--right {
+      margin-right: $margin-element;
+  
+      &-large {
+        margin-right: $margin-element * 2;
+      }
+  
+      &-negative {
+        margin-right: (-$margin-element);
+      }
+  
+      &-small {
+        margin-right: $margin-element / 2;
+      }
+    }
+  
+    &--left {
+      margin-left: $margin-element;
+  
+      &-large {
+        margin-left: $margin-element * 2;
+      }
+  
+      &-negative {
+        margin-left: (-$margin-element);
+      }
+  
+      &-small {
+        margin-left: $margin-element / 2;
+      }
+    }
+  
+    &--bottom {
+      margin-bottom: $margin-element;
+  
+      &-large {
+        margin-bottom: $margin-element * 2;
+      }
+  
+      &-negative {
+        margin-bottom: (-$margin-element);
+      }
+  
+      &-small {
+        margin-bottom: $margin-element / 2;
+      }
+    }
+  }
+  
+  .padding-element {
+    padding: $padding-element;
+  
+    &-small {
+      padding: $padding-element / 2;
+    }
+  
+    &-large {
+      padding: $padding-element * 2;
+    }
+  
+    &--vertical {
+      padding-top: $padding-element;
+      padding-bottom: $padding-element;
+  
+      &-large {
+        padding-top: $padding-element * 2;
+        padding-bottom: $padding-element * 2;
+      }
+    }
+  
+    &--horizontal {
+      padding-right: $padding-element;
+      padding-left: $padding-element;
+  
+      &-large {
+        padding-right: $padding-element * 2;
+        padding-left: $padding-element * 2;
+      }
+    }
+  
+    &--top {
+      padding-top: $padding-element;
+  
+      &-large {
+        padding-top: $padding-element * 2;
+      }
+    }
+  
+    &--right {
+      padding-right: $padding-element;
+  
+      &-large {
+        padding-right: $padding-element * 2;
+      }
+    }
+  
+    &--left {
+      padding-left: $padding-element;
+  
+      &-large {
+        padding-left: $padding-element * 2;
+      }
+    }
+  
+    &--bottom {
+      padding-bottom: $padding-element;
+  
+      &-large {
+        padding-bottom: $padding-element * 2;
+      }
+    }
+  }
+
+  .flex {
+    display: flex;
+  
+    &--centered {
+      justify-content: center;
+      align-items: center;
+  
+      &-full-vertical {
+        align-self: stretch;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  
+    &--fit-content {
+      height: fit-content;
+    }
+  
+    &--justify {
+      &-center {
+        justify-content: center;
+      }
+  
+      &-end {
+        justify-content: flex-end;
+      }
+  
+      &-start {
+        justify-content: flex-start;
+      }
+    }
+  
+    &--align {
+      &-end {
+        align-items: flex-end;
+      }
+  
+      &-start {
+        align-items: flex-start;
+      }
+  
+      &-center {
+        align-items: center;
+      }
+  
+      &-baseline {
+        align-items: baseline;
+      }
+    }
+  
+    &--full-width {
+      width: 100%;
+    }
+  
+    &--space-between {
+      justify-content: space-between;
+    }
+  
+    &--column {
+      flex-direction: column;
+    }
+  
+    &--wrap{
+      flex-wrap: wrap;
+    }
+  
+    &--is-1 {
+      flex: 1;
+    }
+  }
