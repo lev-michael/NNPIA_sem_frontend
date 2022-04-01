@@ -1,0 +1,25 @@
+input {
+    -webkit-appearance: none;
+    width: 100%;
+    border: 0;
+    font-family: inherit;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    //transition: all 0.15s ease;
+    background-color: white;
+    color: black;
+    border: 2px solid #121212;
+
+
+    &:focus{
+        outline: none;
+        border: 2px solid red;
+        scale: 1;
+    }
+}
+
+
+label {
+    padding: 12px 12px 12px 0;
+    display: inline-block;
+}

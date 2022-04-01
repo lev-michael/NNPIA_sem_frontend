@@ -1,5 +1,5 @@
 .menu{
-    position: absolute;
+    position: fixed;
     top: 0px;
     left: 0px;
     background-color: #121212;
@@ -7,6 +7,9 @@
     justify-items: center;
     width: 100%;
     overflow: hidden;
+    z-index: 1000;
+    border-bottom: red 1px solid;
+    font-weight: bold;
 
     &__item {
         display: flex;
@@ -16,18 +19,6 @@
         padding: 1.2rem;
         cursor: pointer;
         text-decoration: none;
-        & > * {
-          margin-left: 0.5rem;
-        }
-    
-        &_active-link {
-          font-weight: bold;
-          border-bottom: 3px solid;
-          display: block;
-          padding-top: 22px;
-          height: 100%;
-          white-space: nowrap;
-        }
     
         &:hover{
           background-color: rgba(128, 128, 128, 0.1);

@@ -5,14 +5,14 @@ import { useAuth } from "./component/AuthContext";
 import Menu from "./component/menu/Menu";
 import MovieList from "./component/movie/MovieList";
 import Home from "./component/home/Home";
-import LoginForm from "./component/LoginForm";
+import LoginForm from "./component/login/LoginForm";
 
 
 function App() {
 
   const { user } = useAuth()
 
-  const nav = user && [
+  const loggedNav = user && [
     {
       id: 1,
       title: "Home",
@@ -35,11 +35,29 @@ function App() {
     }
   ]
 
+  const notLoggedNav = [
+    {
+      id: 1,
+      title: "Home",
+      to: "/",
+    },
+    {
+      id: 2,
+      title: "Movies",
+      to: "/movies",
+    },
+    {
+      id: 3,
+      title: "Sing in",
+      to: "/login",
+    },
+  ]
+
 
   return <Router>
     <div>
       <nav>
-        <Menu nav={nav}></Menu>
+        <Menu nav={user ? loggedNav: notLoggedNav}></Menu>
       </nav>
       <div className='main'>
         <Switch>

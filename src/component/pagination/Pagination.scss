@@ -1,0 +1,28 @@
+.pagination {
+    display: inline-block;
+    color: white;
+    background-color: black;
+    width: 100%;
+
+    &--active {
+        color: red !important;
+        font-weight: bolder !important;
+        border: red 1px solid !important;
+    }
+  }
+
+.pagination button {
+    padding: 0.5rem 1rem;
+    background: black;
+    color: white;
+    border-radius: 0.5rem;
+    margin: 0.5rem;
+    border:black 1px solid;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #121212;
+    }
+  }

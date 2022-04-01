@@ -1,9 +1,7 @@
-import "./Movie.scss"
+import "./MovieList.scss"
 
-function Movie({ movie }) {
-    console.log(movie);
+function MovieItemList({ movie }) {
     return <div className="movie">
-        {movie && movie.title}
         <div className="image-container">
             <img alt="alt" src={"http://image.tmdb.org/t/p/w185/" + movie.img}></img>
             <div className='overlay flex flex--justify-center'>
@@ -13,4 +11,4 @@ function Movie({ movie }) {
     </div>
 }
 
-export default Movie;
+export default MovieItemList;

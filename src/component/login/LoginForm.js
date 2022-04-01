@@ -1,6 +1,8 @@
 import { Redirect } from "react-router-dom";
-import { useAuth } from "./AuthContext";
+import { useAuth } from "../AuthContext";
 import React, { useState } from 'react';
+import "../themes/input.scss"
+import "../themes/button.scss"
 
 export default function LoginForm() {
 
@@ -45,25 +47,19 @@ export default function LoginForm() {
   }
 
   if (isLoggedIn) {
-    return <Redirect to="/"/>;
+    return <Redirect to="/" />;
   }
 
   return (
     <div>
-      <form onSubmit={postLogin}>
-        <input type={"text"} name={"username"} onChange={handleInputChange}/>
-        <input type={"password"} name={"password"} onChange={handleInputChange}/>
-        <button>Login</button>
+      <form className="" onSubmit={postLogin}>
+          <label htmlFor="username">Username</label>
+          <input className="input" type={"text"} name={"username"} onChange={handleInputChange} />
+          <label htmlFor="password">Password</label>
+          <input className="input" type={"password"} name={"password"} onChange={handleInputChange} />
+        <button className="button button--red">Login</button>
         {isError}
       </form>
-
-      <div>
-        Two users are available
-        <ul>
-          <li>javainuse - password</li>
-          <li>javainuseWithRole - password</li>
-        </ul>
-      </div>
     </div>
 
   )

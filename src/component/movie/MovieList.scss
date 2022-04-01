@@ -1,3 +1,9 @@
+.movie-list{
+	text-align: center;
+	transition: all 0.3s ease-in-out;
+	scroll-behavior: smooth;
+}
+
 .movie{
     margin: 1rem;
 }
@@ -5,11 +11,13 @@
 .image-container {
 	position: relative;
 	transition: transform 0.2s;
+	border:black 1px solid;
 }
 
 .image-container:hover {
 	cursor: pointer;
 	transform: scale(1.05);
+	border: 1px red solid;
 }
 
 .image-container:hover .overlay {
@@ -23,7 +31,8 @@
 	transition: 0.5s ease;
 	opacity: 0;
 	bottom: 0;
-	font-size: 20px;
-	padding: 20px;
+	font-size: 15px;
+	font-weight: bold;
+	padding: 1rem;
 	text-align: center;
 }
