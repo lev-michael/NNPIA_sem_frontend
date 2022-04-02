@@ -3,9 +3,9 @@ import { useAuth } from "../AuthContext";
 import React, { useState } from 'react';
 import "../themes/input.scss"
 import "../themes/button.scss"
+import "./LoginForm.scss"
 
 export default function LoginForm() {
-
   const [isLoggedIn, setLoggedIn] = useState(false);
   const [isError, setIsError] = useState(false);
   const [data, setData] = useState({});
@@ -24,11 +24,11 @@ export default function LoginForm() {
 
     fetch(`${process.env.REACT_APP_BASE_URI}/authenticate`,
       {
-        method: 'POST', // *GET, POST, PUT, DELETE, etc.
+        method: 'POST', 
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data) // body data type must match "Content-Type" header
+        body: JSON.stringify(data)
       })
       .then(response => {
         if (response.ok) {
@@ -51,13 +51,16 @@ export default function LoginForm() {
   }
 
   return (
-    <div>
-      <form className="" onSubmit={postLogin}>
-          <label htmlFor="username">Username</label>
-          <input className="input" type={"text"} name={"username"} onChange={handleInputChange} />
-          <label htmlFor="password">Password</label>
-          <input className="input" type={"password"} name={"password"} onChange={handleInputChange} />
-        <button className="button button--red">Login</button>
+    <div className="login-form">
+      <h2>Login to your account</h2>
+      <form onSubmit={postLogin}>
+        <label htmlFor="username">Username</label>
+        <input className="input" type={"text"} name={"username"} onChange={handleInputChange} />
+        <label htmlFor="password">Password</label>
+        <input className="input" type={"password"} name={"password"} onChange={handleInputChange} />
+        <div className="flex flex--justify-end">
+          <button className="button button--red margin-element--top">Login</button>
+        </div>
         {isError}
       </form>
     </div>

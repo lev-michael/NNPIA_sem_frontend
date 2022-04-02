@@ -3,10 +3,10 @@ import React from "react";
 import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom";
 import { useAuth } from "./component/AuthContext";
 import Menu from "./component/menu/Menu";
-import MovieList from "./component/movie/MovieList";
 import Home from "./component/home/Home";
 import LoginForm from "./component/login/LoginForm";
-
+import MovieDetail from './component/movie/movie-detail/MovieDetail';
+import MovieList from './component/movie/movie-list/MovieList';
 
 function App() {
 
@@ -25,11 +25,16 @@ function App() {
     },
     {
       id: 3,
+      title: "Actors",
+      to: "/actors",
+    },
+    {
+      id: 4,
       title: "Profile",
       to: "/profile",
     },
     {
-      id: 4,
+      id: 5,
       title: "Logout",
       to: "/logout",
     }
@@ -57,23 +62,26 @@ function App() {
   return <Router>
     <div>
       <nav>
-        <Menu nav={user ? loggedNav: notLoggedNav}></Menu>
+        <Menu nav={user ? loggedNav : notLoggedNav}></Menu>
       </nav>
       <div className='main'>
         <Switch>
-          <Route exact path="/movies">
+          <Route exact={true} path="/movies/:id">
+            <MovieDetail/>
+          </Route>
+          <Route exact={true} path="/movies">
             <MovieList/>
           </Route>
-          <Route exact path="/profile">
+          <Route exact={true} path="/profile">
             <Home />
           </Route>
-          <Route exact path="/Logout">
+          <Route exact={true} path="/Logout">
             <Logout />
           </Route>
-          <Route exact path="/Login">
-            <LoginForm/>
+          <Route exact={true} path="/Login">
+            <LoginForm />
           </Route>
-          <Route exact path="/">
+          <Route exact={true} path="/">
             <Home></Home>
           </Route>
           <Route render={() => <Redirect to="/" />} />

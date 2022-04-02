@@ -2,14 +2,15 @@
     position: fixed;
     top: 0px;
     left: 0px;
-    background-color: #121212;
+    background-color: black;
     display: flex;
     justify-items: center;
     width: 100%;
     overflow: hidden;
     z-index: 1000;
-    border-bottom: red 1px solid;
+    border-bottom: red 2px solid;
     font-weight: bold;
+    height: 4rem;
 
     &__item {
         display: flex;

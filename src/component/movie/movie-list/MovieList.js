@@ -1,16 +1,18 @@
 import MovieItemList from "./MovieItemList"
-import Pagination from "../pagination/Pagination"
-import "../themes/helpers.scss"
-import "../themes/grid.scss"
+import Pagination from "../../pagination/Pagination"
+import "../../themes/helpers.scss"
+import "../../themes/grid.scss"
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 
-function MovieList() {
+const MovieList = () => {
 
     const [movies, setMovies] = useState([])
     const [isPending, setIsPending] = useState(true)
     const [error, setError] = useState();
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
+    const history = useHistory();
 
     useEffect(() => {
         fetch(`${process.env.REACT_APP_BASE_URI}/movie/list?page=${currentPage - 1}&size=20`)
@@ -36,7 +38,6 @@ function MovieList() {
     }, [currentPage])
 
     function setPage(page) {
-        console.log(page);
         if (page > totalPages) {
             setCurrentPage(totalPages);
         }
@@ -45,14 +46,17 @@ function MovieList() {
         }
         setCurrentPage(page);
     }
-
+    
+    const redirectToMovieHandler = (movieId) => {
+        history.push("/movies/"+movieId);
+    };
 
     return <div className="movie-list">
         {isPending && "Loading data..."}
         {error}
         <h2>Movie list</h2>
         <div className="grid">
-            {movies && movies.map(movie => <MovieItemList key={movie.id} movie={movie}></MovieItemList>)}
+            {movies && movies.map(movie => <MovieItemList onClickHandler={redirectToMovieHandler} key={movie.id} movie={movie}></MovieItemList>)}
         </div>
         <Pagination currentPage={currentPage} lastPage={totalPages}
             setPageHandler={setPage}
