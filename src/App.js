@@ -10,7 +10,9 @@ import MovieList from './component/movie/movie-list/MovieList';
 
 function App() {
 
-  const { user } = useAuth()
+  const { user, userDetail } = useAuth()
+
+  console.log(userDetail);
 
   const loggedNav = user && [
     {

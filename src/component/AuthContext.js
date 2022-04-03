@@ -14,6 +14,7 @@ function AuthProvider({ children }) {
       status: 'success',
       error: null,
       user: null,
+      userDetail: null,
       token: authTokens,
       setTokens,
       removeTokens
@@ -31,29 +32,51 @@ function AuthProvider({ children }) {
     setAuthTokens(data);
     const user = getUser(data);
     setState({
-        status: 'success',
-        error: null,
-        user: user,
-        token: data,
-        setTokens,
-        removeTokens
-      }
+      status: 'success',
+      error: null,
+      user: user,
+      userDetail: userDetail,
+      token: data,
+      setTokens,
+      removeTokens
+    }
     );
 
   }
+  const [userDetail, setUserDetail] = useState({});
+
+  useEffect(() => {
+    const user = getUser(localStorage.getItem("tokens"));
+    if (user) {
+      fetch(`${process.env.REACT_APP_BASE_URI}/user/info`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem("tokens")}`
+          },
+          body: JSON.stringify({ username: user.sub })
+        })
+        .then(res => res.json())
+        .then(res => setUserDetail(res))
+        .catch((error) => console.log('An error occurred')
+        )
+    }
+  }, [])
 
   useEffect(() => {
     const user = getUser(localStorage.getItem("tokens"));
     setState({
-        status: 'success',
-        error: null,
-        user: user,
-        token: localStorage.getItem("tokens"),
-        setTokens,
-        removeTokens
-      }
+      status: 'success',
+      error: null,
+      user: user,
+      userDetail: userDetail,
+      token: localStorage.getItem("tokens"),
+      setTokens,
+      removeTokens
+    }
     );
-  }, [])
+  }, [userDetail])
 
   return (
     <AuthContext.Provider value={state}>

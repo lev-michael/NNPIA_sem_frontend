@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useLayoutEffect, useState } from "react";
+import { useLayoutEffect, useState, useEffect } from "react";
 import moment from "moment"
 import alterImage from "./person.jpg"
 import "./MovieDetail.scss"
@@ -9,7 +9,7 @@ import { useAuth } from "../../AuthContext";
 
 
 const MovieDetail = (() => {
-    const { user } = useAuth()
+    const { user, userDetail } = useAuth()
     const { id } = useParams();
     const [movie, setMovie] = useState();
     const [actors, setActors] = useState();
@@ -17,7 +17,7 @@ const MovieDetail = (() => {
     const [avgRating, setAvgRating] = useState(0);
     const [isPending, setIsPending] = useState(true)
     const [error, setError] = useState();
-
+    const [watchlist, setWatchlist] = useState([]);
 
     useLayoutEffect(() => {
         Promise.all([
@@ -26,13 +26,12 @@ const MovieDetail = (() => {
             fetch(`${process.env.REACT_APP_BASE_URI}/movie/${id}/crew`),
             fetch(`${process.env.REACT_APP_BASE_URI}/rating/${id}`),
         ])
-            .then(([res1, res2, res3, res4]) => Promise.all([res1.json(), res2.json(), res3.json(), res4.json()]))
+            .then(([res1, res2, res3, res4, res5]) => Promise.all([res1.json(), res2.json(), res3.json(), res4.json()]))
             .then(([movie, actors, crew, rating]) => {
                 setMovie(movie);
                 setActors(actors);
                 setCrew(crew);
                 setAvgRating(rating)
-                console.log(avgRating);
             })
             .catch((err) => setError(err.message))
             .finally(() => {
@@ -40,26 +39,68 @@ const MovieDetail = (() => {
             });
     }, []);
 
+    useEffect(() => {
+        fetch(`${process.env.REACT_APP_BASE_URI}/watchlist/${userDetail.id}`)
+            .then((res) => res.json())
+            .then((watchlist) => {
+                setWatchlist(watchlist)
+            })
+            .catch((err) => setError(err.message))
+            .finally(() => {
+                setIsPending(false)
+            });
+    }, [userDetail])
+
     const rateMovieHandler = (score) => {
         const body = {
-            score: score*2,
+            score: score * 2,
             user: user.sub,
-            movie: movie.id    
+            movie: movie.id
         }
-        console.log(localStorage.getItem("tokens") );
         fetch(`${process.env.REACT_APP_BASE_URI}/rating/add`,
             {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': localStorage.getItem("tokens")          
+                    'Authorization': `Bearer ${localStorage.getItem("tokens")}`
                 },
-                body: body
+                body: JSON.stringify(body)
             })
-            .then(res => res.json())
-            .then(res => console.log(res))
             .catch(err => setError(err))
-
+    }
+    const removeFromWatchlist = () => {
+        const body = {
+            userId: userDetail.id,
+            movieId: movie.id
+        }
+        fetch(`${process.env.REACT_APP_BASE_URI}/watchlist/remove`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem("tokens")}`
+                },
+                body: JSON.stringify(body)
+            })
+            .then(_ => setWatchlist(watchlist.filter(m => m.id === movie.id)))
+            .catch(err => setError(err))
+    }
+    const addToWatchlist = () => {
+        const body = {
+            userId: userDetail.id,
+            movieId: movie.id
+        }
+        fetch(`${process.env.REACT_APP_BASE_URI}/watchlist/add`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem("tokens")}`
+                },
+                body: JSON.stringify(body)
+            })
+            .then(_ => setWatchlist([movie.id, ...watchlist]))
+            .catch(err => setError(err))
     }
 
     return <div className="movie-detail">
@@ -71,15 +112,16 @@ const MovieDetail = (() => {
                 <div className="flex--full-width margin-element--left-large">
                     <div className="flex flex--align-center margin-element--bottom-large">
                         <h1>{movie.title}</h1>
-                        <span className="margin-element--left-small margin-element--right">({Math.round(avgRating * 10)}%)</span>
+                        <span className="margin-element--left-small margin-element--right">({isNaN(Math.round(avgRating * 10)) ? 0 : Math.round(avgRating * 10)}%)</span>
                         <ReactStars count={5} color2={"#ff0000"} size={30} edit={false} value={avgRating / 2}></ReactStars>
                     </div>
                     <div>Realease: {moment(movie.release_date).format("DD. MM. YYYY")}</div>
                     <div>Runtime: {movie.runtime} min</div>
                     <div>Genres: {movie.genres.map((g, i) => <span key={g.genre.id}>{g.genre.name} {i !== movie.genres.length - 1 ? ',' : ''}</span>)}</div>
-                    {user && <div className="flex margin-element--vertical">
-                        <button className="button button--red">&hearts; Add to watchlist</button>
-                    </div>}
+                    <div className="flex margin-element--vertical">
+                        {watchlist && watchlist.length && !watchlist.includes(movie.id) && <button className="button button--red" onClick={addToWatchlist}>&hearts; Add to watchlist</button>}
+                        {watchlist && watchlist.length && watchlist.includes(movie.id) && <button className="button button--red" onClick={removeFromWatchlist}>&hearts; Remove from watchlist</button>}
+                    </div>
                     {user && <div className="flex flex--align-center margin-element--bottom-large">
                         <span className="margin-element--right-small">Your rating: </span>
                         <ReactStars count={5} color2={"#ff0000"} size={30} onChange={rateMovieHandler}></ReactStars>
