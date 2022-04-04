@@ -3,13 +3,13 @@ import "./Scroller.scss"
 const Scroller = ({data, alterImage}) => {
 
     return <ol className="scroller">
-        {data && data.map((a, index) => <li className="item" key={index}>
+        {data && data.map((obj, index) => <li className="item" key={index}>
             <div>
-                <img src={a[2] ? ("http://image.tmdb.org/t/p/w92/" + a[2]) : alterImage} alt={a[1]}></img>
+                <img src={obj.img ? ("http://image.tmdb.org/t/p/w154/" + obj.img) : alterImage} alt={obj.name}></img>
             </div>
             <div className="padding-element--horizontal">
-                <p>{a[0]}</p>
-                <p>{a[1]}</p>
+                <p>{obj.role}</p>
+                <p>{obj.name}</p>
             </div>
         </li>)}
     </ol>

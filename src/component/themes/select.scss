@@ -1,0 +1,10 @@
+select {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    outline: none;
+
+    &:focus{
+        outline: solid red 1px;
+    }
+
+}

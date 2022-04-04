@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import jwt_decode from "jwt-decode";
+import { Redirect } from 'react-router-dom';
 
 const getUser = (token) => (token && jwt_decode(token));
 
@@ -48,6 +49,10 @@ function AuthProvider({ children }) {
   useEffect(() => {
     const user = getUser(localStorage.getItem("tokens"));
     if (user) {
+      if (user.exp * 1000 < Date.now()) {
+        removeTokens()
+        return <Redirect to="/" />;
+      }
       fetch(`${process.env.REACT_APP_BASE_URI}/user/info`,
         {
           method: 'POST',

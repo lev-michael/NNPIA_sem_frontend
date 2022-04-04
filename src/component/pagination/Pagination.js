@@ -9,6 +9,7 @@ const Pagination = ({ currentPage, lastPage, setPageHandler }) => {
         const totalPageNumbers = 5;
         if (totalPageNumbers >= lastPage) {
             setPaginationRange(range(1, lastPage));
+            return
         }
 
         const leftSiblingIndex = Math.max(currentPage - 1, 1);
@@ -27,6 +28,7 @@ const Pagination = ({ currentPage, lastPage, setPageHandler }) => {
             let leftItemCount = 3 + 2 * 1;
             let leftRange = range(1, leftItemCount);
             setPaginationRange([...leftRange, lastPage]);
+            return
         }
 
         if (shouldShowLeftDots && !shouldShowRightDots) {
@@ -36,11 +38,13 @@ const Pagination = ({ currentPage, lastPage, setPageHandler }) => {
                 lastPage
             );
             setPaginationRange([firstPageIndex, ...rightRange]);
+            return
         }
 
         if (shouldShowLeftDots && shouldShowRightDots) {
             let middleRange = range(leftSiblingIndex, rightSiblingIndex);
             setPaginationRange([firstPageIndex, ...middleRange, lastPageIndex]);
+            
         }
     }, [lastPage, currentPage]);
 
