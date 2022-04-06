@@ -1,11 +1,12 @@
 import { useParams } from "react-router-dom";
 import { useLayoutEffect, useState, useEffect } from "react";
 import moment from "moment"
-import alterImage from "./person.jpg"
+import alterPersonImage from "../../../img/person.jpg"
 import "./MovieDetail.scss"
 import ReactStars from 'react-stars'
 import Scroller from "../../scroller/Scoller";
 import { useAuth } from "../../AuthContext";
+import { useHistory } from "react-router-dom";
 
 
 const MovieDetail = (() => {
@@ -16,6 +17,9 @@ const MovieDetail = (() => {
     const [isPending, setIsPending] = useState(true)
     const [error, setError] = useState();
     const [watchlist, setWatchlist] = useState([]);
+
+    const history = useHistory();
+
 
     useLayoutEffect(() => {
         fetch(`${process.env.REACT_APP_BASE_URI}/movie/${id}`)
@@ -53,7 +57,7 @@ const MovieDetail = (() => {
                     setIsPending(false)
                 });
         }
-    }, [userDetail, movie])
+    }, [userDetail, movie, id, user])
 
     const rateMovieHandler = (score) => {
         const body = {
@@ -108,6 +112,10 @@ const MovieDetail = (() => {
             .catch(err => setError(err))
     }
 
+    const redirectToActorHandler = (personId) => {
+        history.push("/actors/" + personId);
+    };
+
     return <div className="movie-detail">
         {isPending && "Loading data..."}
         {error}
@@ -124,8 +132,8 @@ const MovieDetail = (() => {
                     <div>Runtime: {movie.runtime} min</div>
                     <div>Genres: {movie.genres.map((g, i) => <span key={i}>{g} {i !== movie.genres.length - 1 ? ',' : ''}</span>)}</div>
                     <div className="flex margin-element--vertical">
-                        {watchlist && watchlist.length && !watchlist.includes(movie.id) && <button className="button button--red" onClick={addToWatchlist}>&hearts; Add to watchlist</button>}
-                        {watchlist && watchlist.length && watchlist.includes(movie.id) && <button className="button button--red" onClick={removeFromWatchlist}>&hearts; Remove from watchlist</button>}
+                        {user && watchlist && !watchlist.includes(movie.id) && <button className="button button--red" onClick={addToWatchlist}>&hearts; Add to watchlist</button>}
+                        {user && watchlist && watchlist.includes(movie.id) && <button className="button button--red" onClick={removeFromWatchlist}>&hearts; Remove from watchlist</button>}
                     </div>
                     {user && <div className="flex flex--align-center margin-element--bottom-large">
                         <span className="margin-element--right-small">Your rating: </span>
@@ -137,9 +145,9 @@ const MovieDetail = (() => {
                 </div>
             </div>
             <h3 className="margin-element--top-large margin-element--left">Actors</h3>
-            {movie.actors && <Scroller data={movie.actors} alterImage={alterImage}></Scroller>}
+            {movie.actors && <Scroller data={movie.actors} alterImage={alterPersonImage} redirectHandler={e => redirectToActorHandler(e)}></Scroller>}
             <h3 className="margin-element--top-large margin-element--left">Crew</h3>
-            {movie.crew && <Scroller data={movie.crew} alterImage={alterImage}></Scroller>}
+            {movie.crew && <Scroller data={movie.crew} alterImage={alterPersonImage} redirectHandler={redirectToActorHandler}></Scroller>}
         </div>)
         }
     </div >

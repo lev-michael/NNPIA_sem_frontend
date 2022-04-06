@@ -7,6 +7,8 @@ import Home from "./component/home/Home";
 import LoginForm from "./component/login/LoginForm";
 import MovieDetail from './component/movie/movie-detail/MovieDetail';
 import MovieList from './component/movie/movie-list/MovieList';
+import ActorList from './component/actor/actor-list/ActorList';
+import ActorDetail from './component/actor/actor-detail/ActorDetail';
 
 function App() {
 
@@ -53,6 +55,11 @@ function App() {
     },
     {
       id: 3,
+      title: "Actors",
+      to: "/actors",
+    },
+    {
+      id: 4,
       title: "Sing in",
       to: "/login",
     },
@@ -71,6 +78,12 @@ function App() {
           </Route>
           <Route exact={true} path="/movies">
             <MovieList/>
+          </Route>
+          <Route exact={true} path="/actors">
+            <ActorList/>
+          </Route>
+          <Route exact={true} path="/actors/:id">
+            <ActorDetail/>
           </Route>
           <Route exact={true} path="/profile">
             <Home />

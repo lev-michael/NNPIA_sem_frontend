@@ -1,9 +1,11 @@
 .pagination {
     display: inline-block;
     color: white;
-    background-color: black;
+    background-color: #121212;
     width: 100%;
-
+    border-top: 1px solid red;
+    padding: 0.5rem;
+    
     &--active {
         color: red !important;
         font-weight: bolder !important;

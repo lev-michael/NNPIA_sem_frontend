@@ -1,17 +1,25 @@
-.movie-list{
+.list{
 	text-align: center;
 	transition: all 0.3s ease-in-out;
 	scroll-behavior: smooth;
 }
 
-.movie{
+.list-item{
     margin: 1rem;
+	transition: transform 0.3s ease-in-out;
 }
 
 .image-container {
 	position: relative;
 	transition: transform 0.2s;
 	border:black 1px solid;
+    border-radius: 0.5rem;
+
+    & img {
+        border-radius: 0.5rem;
+        width: 185px;
+        height: 277px;
+    }
 }
 
 .image-container:hover {
@@ -26,13 +34,14 @@
 
 .overlay {
 	position: absolute;
-	background: rgba(0, 0, 0, 0.8);
+	background: rgba(0, 0, 0, 0.5);
 	width: -webkit-fill-available;
 	transition: 0.5s ease;
-	opacity: 0;
+	opacity: 1;
 	bottom: 0;
 	font-size: 15px;
 	font-weight: bold;
 	padding: 1rem;
 	text-align: center;
+	border-radius: 0 0 0.5rem 0.5rem;
 }

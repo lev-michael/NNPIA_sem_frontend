@@ -1,11 +1,9 @@
-import MovieItemList from "./MovieItemList"
-import Pagination from "../../pagination/Pagination"
+
 import "../../themes/helpers.scss"
 import "../../themes/grid.scss"
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import Search from "../../search/Search";
-import Sort from "../../sort/Sort";
+import List from "../../list/List";
 
 const MovieList = () => {
 
@@ -15,17 +13,19 @@ const MovieList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [searchedText, setSearchedText] = useState("");
-    const [sort, setSort] = useState("id,asc");
+    const [sort, setSort] = useState("title,asc");
 
     const history = useHistory();
 
     const options = [
-        {id: 1, name: "Title A-Z", value: "title,asc"},
-        {id: 2, name: "Title Z-A", value: "title,desc"},
-        {id: 3, name: "Newest release date", value: "release_date,desc"},
-        {id: 4, name: "Oldest realease date", value: "release_date,asc"},
-        {id: 5, name: "Longest runtime", value: "runtime,desc"},
-        {id: 6, name: "Shortest runtime", value: "runtime,asc"},
+        { id: 1, name: "Title A-Z", value: "title,asc" },
+        { id: 2, name: "Title Z-A", value: "title,desc" },
+        { id: 3, name: "Newest release date", value: "release_date,desc" },
+        { id: 4, name: "Oldest realease date", value: "release_date,asc" },
+        { id: 5, name: "Longest runtime", value: "runtime,desc" },
+        { id: 6, name: "Shortest runtime", value: "runtime,asc" },
+        { id: 7, name: "Best score", value: "avgScore,desc" },
+        { id: 8, name: "Worst score", value: "avgScore,asc" },
     ]
 
     useEffect(() => {
@@ -34,7 +34,7 @@ const MovieList = () => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: searchedText ? JSON.stringify({ query: searchedText }) : null
+            body: JSON.stringify({ query: searchedText ?? "" })
         })
             .then(response => {
                 if (response.ok) {
@@ -57,7 +57,12 @@ const MovieList = () => {
             });
     }, [currentPage, searchedText, sort])
 
-    function setPage(page) {
+
+    const searchHandler = (text) => {
+        setSearchedText(text);
+    }
+
+    const setPage = (page) => {
         if (page > totalPages) {
             setCurrentPage(totalPages);
         }
@@ -70,51 +75,19 @@ const MovieList = () => {
     const sortHandler = (value) => {
         console.log(value);
         setSort(value)
-    }   
+    }
 
     const redirectToMovieHandler = (movieId) => {
         history.push("/movies/" + movieId);
     };
 
-    useEffect(() => {
-        fetch(`${process.env.REACT_APP_BASE_URI}/movie/list?page=${currentPage - 1}&size=20`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem("tokens")}`
-            },
-            body: JSON.stringify({ searchedText: searchedText })
-        })
-            .then(response => {
-                if (response.ok) {
-                    return response.json()
-                }
-                throw new Error(`Unable to get data: ${response.statusText}`)
-            })
-            .then(json => {
-                setTotalPages(json.totalPages)
-                setMovies(json.content)
-            })
-            .catch((err) => setError(err.message))
-            .finally(() => {
-                setIsPending(false)
-            });
-    }, [searchedText]);
-
-    return <div className="movie-list">
+    return <div className="movie-detail">
         {isPending && "Loading data..."}
         {error}
         <h2>Movie list</h2>
-        <div className="flex flex--justify-center">
-            <Search onChangeHandler={e => setSearchedText(e.target.value)}></Search>
-            <Sort options={options} selectedItemHandler={sortHandler}></Sort>            
-        </div>
-        <div className="grid">
-            {movies && movies.map(movie => <MovieItemList onClickHandler={redirectToMovieHandler} key={movie.id} movie={movie}></MovieItemList>)}
-        </div>
-        <Pagination currentPage={currentPage} lastPage={totalPages}
-            setPageHandler={setPage}
-        ></Pagination>
+        <List data={movies} currentPage={currentPage} totalPages={totalPages} setPage={setPage}
+            sortOptions={options} sortHandler={sortHandler} redirectToItem={redirectToMovieHandler}
+            searchHandler={searchHandler}></List>
     </div>
 }
 
