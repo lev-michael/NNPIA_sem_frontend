@@ -1,4 +1,6 @@
 .grid {
-    display: inline-grid;
-    grid-template-columns: auto auto auto auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(185px, 185px));
+    gap: 1rem;
+    justify-content: center;
 }

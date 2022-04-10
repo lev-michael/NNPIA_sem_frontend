@@ -74,7 +74,7 @@ const ActorList = () => {
         history.push("/actors/" + personId);
     };
 
-    return <div>
+    return <div className="actor-detail">
         {isPending && "Loading data..."}
         {error}
         <h2 cl>Actor list</h2>

@@ -9,6 +9,8 @@ import MovieDetail from './component/movie/movie-detail/MovieDetail';
 import MovieList from './component/movie/movie-list/MovieList';
 import ActorList from './component/actor/actor-list/ActorList';
 import ActorDetail from './component/actor/actor-detail/ActorDetail';
+import Watchlist from './component/watchlist/Watchlist';
+import Profile from './component/profile/Profile';
 
 function App() {
 
@@ -29,16 +31,6 @@ function App() {
       id: 3,
       title: "Actors",
       to: "/actors",
-    },
-    {
-      id: 4,
-      title: "Profile",
-      to: "/profile",
-    },
-    {
-      id: 5,
-      title: "Logout",
-      to: "/logout",
     }
   ]
 
@@ -57,21 +49,41 @@ function App() {
       id: 3,
       title: "Actors",
       to: "/actors",
+    }
+  ];
+
+  const userNav = user ? [
+    {
+      id: 1,
+      title: "Watchlist",
+      to: "/watchlist",
     },
     {
-      id: 4,
-      title: "Sing in",
+      id: 2,
+      title: "Profile",
+      to: "/profile",
+    },
+    {
+      id: 3,
+      title: "Logout",
+      to: "/logout",
+    }
+  ] 
+  : [
+    {
+      id: 1,
+      title: "Login",
       to: "/login",
     },
-  ]
+  ];
 
 
   return <Router>
-    <div>
+    <div className='main'>
       <nav>
-        <Menu nav={user ? loggedNav : notLoggedNav}></Menu>
+        <Menu nav={user ? loggedNav : notLoggedNav} userNav={userNav}></Menu>
       </nav>
-      <div className='main'>
+      <div >
         <Switch>
           <Route exact={true} path="/movies/:id">
             <MovieDetail/>
@@ -85,8 +97,11 @@ function App() {
           <Route exact={true} path="/actors/:id">
             <ActorDetail/>
           </Route>
+          <Route exact={true} path="/watchlist">
+            <Watchlist/>
+          </Route>
           <Route exact={true} path="/profile">
-            <Home />
+            <Profile/>
           </Route>
           <Route exact={true} path="/Logout">
             <Logout />

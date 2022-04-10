@@ -7,7 +7,7 @@ import ListItem from "./ListItem";
 
 const List = ({ data, currentPage, totalPages, setPage, sortHandler, sortOptions, redirectToItem, searchHandler, altImage }) => {
     return <div className="list">
-        <div className="flex flex--justify-center">
+        <div className="flex flex--justify-center flex--wrap">
             <Search onChangeHandler={e => searchHandler(e.target.value)}></Search>
             <Sort options={sortOptions} selectedItemHandler={sortHandler}></Sort>
         </div>

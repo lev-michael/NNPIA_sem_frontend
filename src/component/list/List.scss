@@ -7,6 +7,8 @@
 .list-item{
     margin: 1rem;
 	transition: transform 0.3s ease-in-out;
+	width: 100%;
+
 }
 
 .image-container {
@@ -14,6 +16,7 @@
 	transition: transform 0.2s;
 	border:black 1px solid;
     border-radius: 0.5rem;
+	width: 100%;
 
     & img {
         border-radius: 0.5rem;

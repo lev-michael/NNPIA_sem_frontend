@@ -1,11 +1,12 @@
 import { useState } from 'react';
+import "./TextShowMore.scss"
 
-function TextShowMore({text}) {
+function TextShowMore({text, limit = 250}) {
     const [showMore, setShowMore] = useState(false);
 
-    return <div>
-        {showMore ? text : `${text.substring(0, 250)+"..."}`}
-        <button className="button" style={{display: "inline-block"}} onClick={e=>setShowMore(prev=>!prev)}>Show {showMore? "less":"more"}</button>
+    return <div className='text text--small'>
+        {showMore | text.length < limit ? text : `${text.substring(0, limit)}...`}
+        {text.length > limit && <span className="show-more-button" onClick={e=>setShowMore(prev=>!prev)}>(Show {showMore? "less":"more"})</span>}
     </div>;
 }
 

@@ -7,6 +7,7 @@ import ReactStars from 'react-stars'
 import Scroller from "../../scroller/Scoller";
 import { useAuth } from "../../AuthContext";
 import { useHistory } from "react-router-dom";
+import TextShowMore from "../../text-show-more/TextShowMore";
 
 
 const MovieDetail = (() => {
@@ -137,10 +138,10 @@ const MovieDetail = (() => {
                     </div>
                     {user && <div className="flex flex--align-center margin-element--bottom-large">
                         <span className="margin-element--right-small">Your rating: </span>
-                        <ReactStars count={5} color2={"#ff0000"} size={30} value={userRating/2} onChange={rateMovieHandler}></ReactStars>
+                        <ReactStars count={5} color2={"#ff0000"} size={30} value={userRating / 2} onChange={rateMovieHandler}></ReactStars>
                     </div>}
                     <div className="margin-element--top-large">About:
-                        <p>{movie.description}</p>
+                        <TextShowMore text={movie.description}></TextShowMore>
                     </div>
                 </div>
             </div>
