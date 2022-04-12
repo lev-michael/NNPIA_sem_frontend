@@ -1,6 +1,6 @@
-import "./List.scss"
+import "./Card.scss"
 
-function ListItem({ data, onClickHandler, altImage }) {
+function Card({ data, onClickHandler, altImage }) {
     return <div className="list-item">
         <div className="image-container" onClick={e => onClickHandler(data.id)}>
             <img src={data.img ? ("http://image.tmdb.org/t/p/w185/" + data.img) : altImage} alt={data.title}></img>
@@ -11,4 +11,4 @@ function ListItem({ data, onClickHandler, altImage }) {
         </div>
     </div>
 }
-export default ListItem;
+export default Card;

@@ -6,11 +6,12 @@ import Menu from "./component/menu/Menu";
 import Home from "./component/home/Home";
 import LoginForm from "./component/login/LoginForm";
 import MovieDetail from './component/movie/movie-detail/MovieDetail';
-import MovieList from './component/movie/movie-list/MovieList';
+import MovieCards from './component/movie/movie-cards/MovieCards';
 import ActorList from './component/actor/actor-list/ActorList';
 import ActorDetail from './component/actor/actor-detail/ActorDetail';
 import Watchlist from './component/watchlist/Watchlist';
-import Profile from './component/profile/Profile';
+import MyRatings from './component/my-rating/MyRatings';
+import AddMovie from './component/movie/add-movie/AddMovie';
 
 function App() {
 
@@ -60,8 +61,8 @@ function App() {
     },
     {
       id: 2,
-      title: "Profile",
-      to: "/profile",
+      title: "My Ratings",
+      to: "/my-ratings",
     },
     {
       id: 3,
@@ -89,7 +90,10 @@ function App() {
             <MovieDetail/>
           </Route>
           <Route exact={true} path="/movies">
-            <MovieList/>
+            <MovieCards/>
+          </Route>
+          <Route exact={true} path="/add-movie">
+            <AddMovie/>
           </Route>
           <Route exact={true} path="/actors">
             <ActorList/>
@@ -100,8 +104,8 @@ function App() {
           <Route exact={true} path="/watchlist">
             <Watchlist/>
           </Route>
-          <Route exact={true} path="/profile">
-            <Profile/>
+          <Route exact={true} path="/my-ratings">
+            <MyRatings/>
           </Route>
           <Route exact={true} path="/Logout">
             <Logout />

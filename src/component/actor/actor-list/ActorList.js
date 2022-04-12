@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import List from "../../list/List";
+import Cards from "../../cards/Cards";
 import altImage from "../../../img/person.jpg"
 
 const ActorList = () => {
@@ -66,7 +66,6 @@ const ActorList = () => {
     }
 
     const sortHandler = (value) => {
-        console.log(value);
         setSort(value)
     }
 
@@ -75,12 +74,11 @@ const ActorList = () => {
     };
 
     return <div className="actor-detail">
-        {isPending && "Loading data..."}
         {error}
         <h2 cl>Actor list</h2>
-        <List data={actors} currentPage={currentPage} totalPages={totalPages} setPage={setPage}
+        <Cards data={actors} currentPage={currentPage} totalPages={totalPages} setPage={setPage}
             sortOptions={options} sortHandler={sortHandler} redirectToItem={redirectToActorHandler}
-            searchHandler={searchHandler} altImage={altImage}></List>
+            searchHandler={searchHandler} altImage={altImage} isPending={isPending}></Cards>
     </div> 
 } 
 export default ActorList;

@@ -5,6 +5,7 @@ import "./ActorDetail.scss"
 import Scroller from '../../scroller/Scoller';
 import { useHistory } from 'react-router-dom';
 import TextShowMore from '../../text-show-more/TextShowMore';
+import Loader from '../../loader/Loader';
 
 function ActorDetail() {
     const { id } = useParams();
@@ -33,7 +34,7 @@ function ActorDetail() {
 
 
     return <div className='actor-detail'>
-        {isPending && "Loading data..."}
+        {isPending && <Loader/>}
         {error}
         {actor && <div className="flex flex--align-center">
             <img style={{ borderRadius: "0.5rem" }} src={"http://image.tmdb.org/t/p/w300/" + actor.img} alt={actor.name}></img>
@@ -50,7 +51,10 @@ function ActorDetail() {
                 <p>Known for: {actor.cast_movies ? "Acting, " : ""}{Array.from(new Set(actor.crew_movies.map((item) => item.role + ", ")))}</p>
             </div>
         </div>}
+
+        {actor && actor.crew_movies && <h4>Participated in creation of:</h4>}
         {actor && actor.crew_movies && <Scroller data={actor.crew_movies} redirectHandler={e => redirectToMovieHandler(e)}></Scroller>}
+        {actor && actor.cast_movies && <h4>Act in:</h4>}
         {actor && actor.cast_movies && <Scroller data={actor.cast_movies} redirectHandler={e => redirectToMovieHandler(e)}></Scroller>}
     </div>;
 }

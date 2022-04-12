@@ -2,12 +2,14 @@ import { useParams } from "react-router-dom";
 import { useLayoutEffect, useState, useEffect } from "react";
 import moment from "moment"
 import alterPersonImage from "../../../img/person.jpg"
+import alterMovieImage from "../../../img/poster.jpg"
 import "./MovieDetail.scss"
 import ReactStars from 'react-stars'
 import Scroller from "../../scroller/Scoller";
 import { useAuth } from "../../AuthContext";
 import { useHistory } from "react-router-dom";
 import TextShowMore from "../../text-show-more/TextShowMore";
+import Loader from "../../loader/Loader";
 
 
 const MovieDetail = (() => {
@@ -49,7 +51,6 @@ const MovieDetail = (() => {
             ])
                 .then(([res1, res2]) => Promise.all([res1.json(), res2.json()]))
                 .then(([watchlist, rating]) => {
-                    console.log(watchlist, rating);
                     setWatchlist(watchlist);
                     setUserRating(rating)
                 })
@@ -118,11 +119,11 @@ const MovieDetail = (() => {
     };
 
     return <div className="movie-detail">
-        {isPending && "Loading data..."}
+        {isPending && <Loader/>}
         {error}
         {movie && (<div>
             <div className="flex flex--align-center">
-                <img style={{ borderRadius: "0.5rem" }} src={"http://image.tmdb.org/t/p/w300/" + movie.img} alt={movie.title}></img>
+                <img style={{ borderRadius: "0.5rem" }} src={movie.img ? "http://image.tmdb.org/t/p/w300/" + movie.img : alterMovieImage} alt={movie.title}></img>
                 <div className="flex--full-width margin-element--left-large">
                     <div className="flex flex--align-center margin-element--bottom-large">
                         <h1>{movie.title}</h1>
@@ -145,9 +146,9 @@ const MovieDetail = (() => {
                     </div>
                 </div>
             </div>
-            <h3 className="margin-element--top-large margin-element--left">Actors</h3>
+            {movie.actors && movie.actors.length > 0 && <h3 className="margin-element--top-large margin-element--left">Actors</h3>}
             {movie.actors && <Scroller data={movie.actors} alterImage={alterPersonImage} redirectHandler={e => redirectToActorHandler(e)}></Scroller>}
-            <h3 className="margin-element--top-large margin-element--left">Crew</h3>
+            {movie.crew && movie.crew.length > 0 && <h3 className="margin-element--top-large margin-element--left">Crew</h3>}
             {movie.crew && <Scroller data={movie.crew} alterImage={alterPersonImage} redirectHandler={redirectToActorHandler}></Scroller>}
         </div>)
         }

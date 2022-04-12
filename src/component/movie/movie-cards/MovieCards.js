@@ -3,9 +3,12 @@ import "../../themes/helpers.scss"
 import "../../themes/grid.scss"
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import List from "../../list/List";
+import Cards from "../../cards/Cards";
+import { movieSortOptions } from "../../sort/Sort";
+import altImage from "../../../img/poster.jpg"
 
-const MovieList = () => {
+
+const MovieCards = () => {
 
     const [movies, setMovies] = useState([])
     const [isPending, setIsPending] = useState(true)
@@ -18,14 +21,9 @@ const MovieList = () => {
     const history = useHistory();
 
     const options = [
-        { id: 1, name: "Title A-Z", value: "title,asc" },
-        { id: 2, name: "Title Z-A", value: "title,desc" },
-        { id: 3, name: "Newest release date", value: "release_date,desc" },
-        { id: 4, name: "Oldest realease date", value: "release_date,asc" },
-        { id: 5, name: "Longest runtime", value: "runtime,desc" },
-        { id: 6, name: "Shortest runtime", value: "runtime,asc" },
-        { id: 7, name: "Best score", value: "avgScore,desc" },
-        { id: 8, name: "Worst score", value: "avgScore,asc" },
+        ...movieSortOptions,
+        { id: 7, name: "Best average score", value: "avgScore,desc" },
+        { id: 8, name: "Worst average score", value: "avgScore,asc" },
     ]
 
     useEffect(() => {
@@ -73,7 +71,6 @@ const MovieList = () => {
     }
 
     const sortHandler = (value) => {
-        console.log(value);
         setSort(value)
     }
 
@@ -82,13 +79,12 @@ const MovieList = () => {
     };
 
     return <div className="movie-detail">
-        {isPending && "Loading data..."}
         {error}
         <h2>Movie list</h2>
-        <List data={movies} currentPage={currentPage} totalPages={totalPages} setPage={setPage}
+        <Cards data={movies} currentPage={currentPage} totalPages={totalPages} setPage={setPage}
             sortOptions={options} sortHandler={sortHandler} redirectToItem={redirectToMovieHandler}
-            searchHandler={searchHandler}></List>
+            searchHandler={searchHandler} isPending={isPending} altImage={altImage}></Cards>
     </div>
 }
 
-export default MovieList;
+export default MovieCards;
