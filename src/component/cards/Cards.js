@@ -4,13 +4,20 @@ import Search from "../search/Search";
 import Sort from "../sort/Sort";
 import "./Card.scss"
 import Card from "./Card";
+import { useAuth } from "../AuthContext";
 
 
-const Cards = ({ data, currentPage, totalPages, setPage, sortHandler, sortOptions, redirectToItem, searchHandler, altImage, isPending }) => {
+const Cards = ({ data, currentPage, totalPages, setPage, sortHandler, sortOptions, redirectToItem, searchHandler, altImage, isPending, addNewHandler }) => {
+    const { userDetail } = useAuth()
+
+
     return <div className="list">
         <div className="flex flex--justify-center flex--wrap">
             <Search onChangeHandler={e => searchHandler(e.target.value)}></Search>
             <Sort options={sortOptions} selectedItemHandler={sortHandler}></Sort>
+            {userDetail && userDetail.role === "ADMIN" && <div>
+                <button className="button button--red margin-element" onClick={addNewHandler}>Add movie</button>
+            </div>}
         </div>
         {isPending && <Loader/>}
         <div className="grid">

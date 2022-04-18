@@ -16,23 +16,60 @@
 
 }
 
+.circle {
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    position: relative;
+    border: white solid 3px;
+}
+
+.circle::after {
+    content: " ";
+    position: absolute;
+    display: block;
+    background-color: #fff;
+    height: 5px;
+    margin-top: -2px;
+    top: 50%;
+    left: 10px;
+    right: 10px;
+}
+
+.circle::before {
+    content: " ";
+    position: absolute;
+    display: block;
+    background-color: #fff;
+    width: 5px;
+    margin-left: -2px;
+    left: 50%;
+    top: 10px;
+    bottom: 10px;
+}
+
 .item {
     margin: 1rem;
     padding-bottom: 1rem;
     border-radius: 0.5rem;
     font-size: 13px;
     box-shadow: 0 2px 8px black;
-	transition: transform 0.3s ease-in-out;
+    transition: transform 0.3s ease-in-out;
+
+    &--add {
+        width: 300px;
+        height: 450px;
+        font-size: 20px;
+    }
 
     &:hover {
         cursor: pointer;
         transform: scale(1.02);
-        border: 1px red solid;
     }
 
     & img {
-        width: 160px;
-        height: 225px;
+        width: 270px;
+        height: 405px;
         border-radius: 0.5rem;
     }
 }

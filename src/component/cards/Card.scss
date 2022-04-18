@@ -11,40 +11,54 @@
 
 }
 
+.card-label{
+	opacity: 1;
+	transition: opacity 0.3s ease-in-out;
+	padding: 0 0.25rem;
+}
+
+.list-item:hover  .card-label{
+	opacity: 0;
+}
+
 .image-container {
 	position: relative;
 	transition: transform 0.2s;
-	border:black 1px solid;
     border-radius: 0.5rem;
 	width: 100%;
 
     & img {
         border-radius: 0.5rem;
-        width: 185px;
-        height: 277px;
+        width: 300px;
+        height: 450px;
     }
 }
 
-.image-container:hover {
+.list-item:hover {
 	cursor: pointer;
-	transform: scale(1.05);
-	border: 1px red solid;
+	transform: scale(1.02);
 }
 
-.image-container:hover .overlay {
-	opacity: 1;
-}
+
 
 .overlay {
 	position: absolute;
 	background: rgba(0, 0, 0, 0.5);
 	width: -webkit-fill-available;
 	transition: 0.5s ease;
-	opacity: 1;
+	opacity: 0;
 	bottom: 0;
 	font-size: 15px;
 	font-weight: bold;
-	padding: 1rem;
+	padding: 1rem 0;
 	text-align: center;
 	border-radius: 0 0 0.5rem 0.5rem;
+	width: 100%;
+
 }
+
+.list-item:hover .overlay {
+	opacity: 1;
+}
+
+

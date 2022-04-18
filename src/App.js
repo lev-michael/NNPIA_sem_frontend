@@ -12,6 +12,9 @@ import ActorDetail from './component/actor/actor-detail/ActorDetail';
 import Watchlist from './component/watchlist/Watchlist';
 import MyRatings from './component/my-rating/MyRatings';
 import AddMovie from './component/movie/add-movie/AddMovie';
+import AddActor from './component/actor/add-actor/AddActor';
+import EditActor from './component/actor/edit-actor/EditActor';
+import EditMovie from './component/movie/edit-movie/EditMovie';
 
 function App() {
 
@@ -84,7 +87,7 @@ function App() {
       <nav>
         <Menu nav={user ? loggedNav : notLoggedNav} userNav={userNav}></Menu>
       </nav>
-      <div >
+      <div>
         <Switch>
           <Route exact={true} path="/movies/:id">
             <MovieDetail/>
@@ -92,14 +95,23 @@ function App() {
           <Route exact={true} path="/movies">
             <MovieCards/>
           </Route>
-          <Route exact={true} path="/add-movie">
+          <Route exact={true} path="/movie/add">
             <AddMovie/>
+          </Route>
+          <Route exact={true} path="/movie/edit/:id">
+            <EditMovie/>
           </Route>
           <Route exact={true} path="/actors">
             <ActorList/>
           </Route>
           <Route exact={true} path="/actors/:id">
             <ActorDetail/>
+          </Route>
+          <Route exact={true} path="/actor/add">
+            <AddActor/>
+          </Route>
+          <Route exact={true} path="/actor/edit/:id">
+            <EditActor/>
           </Route>
           <Route exact={true} path="/watchlist">
             <Watchlist/>

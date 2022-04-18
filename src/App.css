@@ -3,13 +3,17 @@
   height: 100%;
 }
 
+#root {
+  height: 100%;
+}
+
 nav {
   margin-top: 4rem;
 }
 
 .main {
   margin: auto;
-  max-width: 1000px;
+  max-width: 1400px;
   background-color: #121212;
   width: 100%;
   padding: 1rem;

@@ -7,12 +7,12 @@
     justify-items: center;
     width: 100%;
     overflow: hidden;
-    z-index: 1000;
     border-bottom: red 2px solid;
     font-weight: bold;
-    height: 4rem;
+    height: 4.5rem;
 
     &__item {
+        margin: 1rem 2rem;
         display: flex;
         max-height: 100%;
         color: white;
@@ -21,6 +21,7 @@
         cursor: pointer;
         text-decoration: none;
         white-space: nowrap;
+        font-size: 18px;
                 
         &-last {
           justify-content: right;
@@ -29,7 +30,7 @@
         &:hover{
           color: red;
           transition: 0.3s ease-in-out;
-          font-size: 17px;
+          font-size: 19px;
           padding: 1.1rem;
         }
       }

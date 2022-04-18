@@ -34,7 +34,6 @@ export default function LoginForm() {
         if (response.ok) {
           return response.json()
         }
-        throw new Error(`Unable to get data: ${response.statusText}`)
       })
       .then(json => {
         setTokens(json.token);

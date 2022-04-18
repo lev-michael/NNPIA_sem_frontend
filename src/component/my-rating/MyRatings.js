@@ -38,11 +38,11 @@ function MyRatings() {
                 if (response.ok) {
                     return response.json()
                 }
-                throw new Error(`Unable to get data: ${response.statusText}`)
             })
             .then(ratings => {
-                setRatings(ratings.content)
-                setTotalPages(ratings.totalPages)
+                setRatings(ratings.result.content)
+                setTotalPages(ratings.result.totalPages)
+                setError(null)
             })
             .catch((err) => setError(err.message))
             .finally(() => {
@@ -95,7 +95,7 @@ function MyRatings() {
     }
 
 
-    return <div>
+    return <div className='actor-detail'>
         <h2>My Ratings</h2>
         <div className="flex flex--justify-center flex--wrap">
             <Search onChangeHandler={e => searchHandler(e.target.value)}></Search>
@@ -104,6 +104,8 @@ function MyRatings() {
         {isPending && <Loader />}
         {error}
         {ratings && ratings.map(movie => <MovieListItem key={movie.id} movie={movie} ratingUpdatedHandler={rateMovieHandler} />)}
+        {!ratings.length && <h3 className='margin-element text--centered'>No movies rated yet.</h3>}
+
         <Pagination currentPage={currentPage} lastPage={totalPages} setPageHandler={setPage}></Pagination>
     </div>;
 }

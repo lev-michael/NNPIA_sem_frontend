@@ -3,9 +3,9 @@ import Select from 'react-select';
 import "./AddMovie.scss";
 
 function AddMovie() {
-    const [isError, setError] = useState(false);
     const [data, setData] = useState({});
     const [genres, setGenres] = useState([]);
+    const [isError, setError] = useState(false);
     const [isPending, setIsPending] = useState(true)
 
     useLayoutEffect(() => {
@@ -20,11 +20,11 @@ function AddMovie() {
                 if (response.ok) {
                     return response.json()
                 }
-                throw new Error(`Unable to get data: ${response.statusText}`)
             })
             .then(res => {
-                const g = res.map(g => ({ value: g.id, label: g.name }))
+                const g = res.result.map(g => ({ value: g.id, label: g.name }))
                 setGenres(g)
+                setError(null)
             })
             .catch((err) => setError(err.message))
             .finally(_ => setIsPending(false))
@@ -93,7 +93,7 @@ function AddMovie() {
             <label htmlFor="img">Image</label>
             <input className="input" type={"text"} name={"img"} onChange={handleInputChange} />
             <label htmlFor="description">Description</label>
-            <input className="input" type={"text"} name={"description"} onChange={handleInputChange} />
+            <textarea className="input" rows={10} name={"description"} onChange={handleInputChange} />
             <label htmlFor="release_date">Release date</label>
             <input className="input" type={"date"} name={"release_date"} onChange={handleInputChange} />
             <label htmlFor="runtime">Runtime</label>
@@ -101,7 +101,7 @@ function AddMovie() {
             <label htmlFor="genres">Genres</label>
             <Select name={"genres"} options={genres} isMulti isSearchable className="basic-multi-select" styles={customStyles} onChange={handleSelectChange} />
             <div className="flex flex--justify-end">
-                <button className="button button--red margin-element--top" disabled={!formValid()} onClick={addMovie}>Add movie</button>
+                <button className="button button--red margin-element--top" disabled={!formValid()} onClick={addMovie}>Add</button>
             </div>
             {isError}
         </form>

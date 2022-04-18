@@ -63,7 +63,7 @@ function AuthProvider({ children }) {
           body: JSON.stringify({ username: user.sub })
         })
         .then(res => res.json())
-        .then(res => setUserDetail(res))
+        .then(res => setUserDetail(res.result))
         .catch((error) => console.log('An error occurred')
         )
     }

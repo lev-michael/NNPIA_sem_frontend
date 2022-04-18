@@ -10,6 +10,7 @@ import { useAuth } from "../../AuthContext";
 import { useHistory } from "react-router-dom";
 import TextShowMore from "../../text-show-more/TextShowMore";
 import Loader from "../../loader/Loader";
+import ProgressCircle from "../../progress-circle/ProgressCircle";
 
 
 const MovieDetail = (() => {
@@ -20,6 +21,7 @@ const MovieDetail = (() => {
     const [isPending, setIsPending] = useState(true)
     const [error, setError] = useState();
     const [watchlist, setWatchlist] = useState([]);
+    const [refresh, setRefresh] = useState(false);
 
     const history = useHistory();
 
@@ -28,13 +30,15 @@ const MovieDetail = (() => {
         fetch(`${process.env.REACT_APP_BASE_URI}/movie/${id}`)
             .then((res) => res.json())
             .then((movie) => {
-                setMovie(movie);
+                setMovie(movie.result);
+                setError(null)
             })
             .catch((err) => setError(err.message))
             .finally(() => {
                 setIsPending(false)
+                setRefresh(false)
             });
-    }, []);
+    }, [id, refresh]);
 
     useEffect(() => {
         if (user && userDetail && movie) {
@@ -49,10 +53,15 @@ const MovieDetail = (() => {
                     body: JSON.stringify({ userId: userDetail.id, movieId: movie.id })
                 }),
             ])
-                .then(([res1, res2]) => Promise.all([res1.json(), res2.json()]))
+                .then(([res1, res2]) => {
+                    if (res1.ok && res2.ok) {
+                        return Promise.all([res1.json(), res2.json()])
+                    }
+                })
                 .then(([watchlist, rating]) => {
-                    setWatchlist(watchlist);
-                    setUserRating(rating)
+                    setError(null)
+                    setWatchlist(watchlist.result);
+                    setUserRating(rating.result)
                 })
                 .catch((err) => setError(err.message))
                 .finally(() => {
@@ -117,22 +126,56 @@ const MovieDetail = (() => {
     const redirectToActorHandler = (personId) => {
         history.push("/actors/" + personId);
     };
+    const redirectToEdit = () => {
+        history.push("/movie/edit/" + id);
+    };
+
+    const addActor = (data) => {
+        setIsPending(true)
+        fetch(`${process.env.REACT_APP_BASE_URI}/movie/cast/add`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem("tokens")}`
+            },
+            body: JSON.stringify({ ...data, movie_id: id })
+        })
+        .then(_ => setRefresh(true))
+        .catch(err => setError(err))
+        .finally(setIsPending(false));
+    }
+    const addCrew = (data) => {
+        setIsPending(true)
+        fetch(`${process.env.REACT_APP_BASE_URI}/movie/crew/add`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem("tokens")}`
+            },
+            body: JSON.stringify({ ...data, movie_id: id })
+        })
+        .then(_ => setRefresh(true))
+        .catch(err => setError(err))
+        .finally(setIsPending(false));
+    }
+
 
     return <div className="movie-detail">
-        {isPending && <Loader/>}
+        {isPending && <Loader />}
         {error}
         {movie && (<div>
-            <div className="flex flex--align-center">
+            <div className="flex flex--align-start">
                 <img style={{ borderRadius: "0.5rem" }} src={movie.img ? "http://image.tmdb.org/t/p/w300/" + movie.img : alterMovieImage} alt={movie.title}></img>
                 <div className="flex--full-width margin-element--left-large">
                     <div className="flex flex--align-center margin-element--bottom-large">
                         <h1>{movie.title}</h1>
-                        <span className="margin-element--left-small margin-element--right">({Math.round(movie.avgRating * 10)}%)</span>
-                        <ReactStars count={5} color2={"#ff0000"} size={30} edit={false} value={movie.avgRating / 2}></ReactStars>
+                        <div className="margin-element">
+                            <ProgressCircle score={movie.avgScore} />
+                        </div>
                     </div>
                     <div>Realease: {moment(movie.release_date).format("DD. MM. YYYY")}</div>
                     <div>Runtime: {movie.runtime} min</div>
-                    <div>Genres: {movie.genres.map((g, i) => <span key={i}>{g} {i !== movie.genres.length - 1 ? ',' : ''}</span>)}</div>
+                    {movie.genres && <div>Genres: {movie.genres.map((g, i) => <span key={i}>{g} {i !== movie.genres.length - 1 ? ',' : ''}</span>)}</div>}
                     <div className="flex margin-element--vertical">
                         {user && watchlist && !watchlist.includes(movie.id) && <button className="button button--red" onClick={addToWatchlist}>&hearts; Add to watchlist</button>}
                         {user && watchlist && watchlist.includes(movie.id) && <button className="button button--red" onClick={removeFromWatchlist}>&hearts; Remove from watchlist</button>}
@@ -145,11 +188,12 @@ const MovieDetail = (() => {
                         <TextShowMore text={movie.description}></TextShowMore>
                     </div>
                 </div>
+                <div><button className="button button--red" onClick={redirectToEdit}>Edit</button></div>
             </div>
             {movie.actors && movie.actors.length > 0 && <h3 className="margin-element--top-large margin-element--left">Actors</h3>}
-            {movie.actors && <Scroller data={movie.actors} alterImage={alterPersonImage} redirectHandler={e => redirectToActorHandler(e)}></Scroller>}
+            {movie.actors && <Scroller addActorHandler={addActor}  data={movie.actors} alterImage={alterPersonImage} redirectHandler={e => redirectToActorHandler(e)}></Scroller>}
             {movie.crew && movie.crew.length > 0 && <h3 className="margin-element--top-large margin-element--left">Crew</h3>}
-            {movie.crew && <Scroller data={movie.crew} alterImage={alterPersonImage} redirectHandler={redirectToActorHandler}></Scroller>}
+            {movie.crew && <Scroller addCrewHandler={addCrew} data={movie.crew} alterImage={alterPersonImage} redirectHandler={redirectToActorHandler}></Scroller>}
         </div>)
         }
     </div >

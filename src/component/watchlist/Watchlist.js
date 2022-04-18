@@ -43,11 +43,11 @@ function Watchlist() {
                 if (response.ok) {
                     return response.json()
                 }
-                throw new Error(`Unable to get data: ${response.statusText}`)
             })
             .then(watchlist => {
-                setWatchlist(watchlist.content)
-                setTotalPages(watchlist.totalPages)
+                setWatchlist(watchlist.result.content)
+                setTotalPages(watchlist.result.totalPages)
+                setError(null)
             })
             .catch((err) => setError(err.message))
             .finally(() => {
@@ -96,15 +96,16 @@ function Watchlist() {
             })
     }
 
-    return <div>
+    return <div className='actor-detail'>
         {isPending && <Loader />}
         {error}
-        <h2>My watchlist</h2>
+        <h2 className='margin-element--large'>My watchlist</h2>
         <div className="flex flex--justify-center flex--wrap">
             <Search onChangeHandler={e => searchHandler(e.target.value)}></Search>
             <Sort options={options} selectedItemHandler={sortHandler}></Sort>
         </div>
         {watchlist && watchlist.map(movie => <MovieListItem key={movie.id} movie={movie} removeHandler={removeFromWatchlist} />)}
+        {!watchlist.length && <h3 className='margin-element text--centered'>There are no movies on your watchlist.</h3>}
         <Pagination currentPage={currentPage} lastPage={totalPages} setPageHandler={setPage}></Pagination>
     </div>;
 }

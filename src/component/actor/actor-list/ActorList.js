@@ -10,7 +10,7 @@ const ActorList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [searchedText, setSearchedText] = useState("");
-    const [sort, setSort] = useState("img,asc");
+    const [sort, setSort] = useState("name,asc");
 
     const history = useHistory();
 
@@ -22,7 +22,7 @@ const ActorList = () => {
     ]
 
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_BASE_URI}/person/actors/list?page=${currentPage - 1}&size=20&sort=${sort}&sort=img,asc`, {
+        fetch(`${process.env.REACT_APP_BASE_URI}/person/actors/list?page=${currentPage - 1}&size=20&sort=${sort}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -33,11 +33,11 @@ const ActorList = () => {
                 if (response.ok) {
                     return response.json()
                 }
-                throw new Error(`Unable to get data: ${response.statusText}`)
             })
-            .then(json => {
-                setTotalPages(json.totalPages)
-                setActors(json.content)
+            .then(res => {
+                setTotalPages(res.result.totalPages)
+                setActors(res.result.content)
+                setError(null)
                 window.scrollTo({
                     left: 0,
                     top: 0,
@@ -72,13 +72,16 @@ const ActorList = () => {
     const redirectToActorHandler = (personId) => {
         history.push("/actors/" + personId);
     };
+    const redirectToAddActorHandler = () => {
+        history.push("/actor/add");
+    };
 
     return <div className="actor-detail">
         {error}
         <h2 cl>Actor list</h2>
         <Cards data={actors} currentPage={currentPage} totalPages={totalPages} setPage={setPage}
             sortOptions={options} sortHandler={sortHandler} redirectToItem={redirectToActorHandler}
-            searchHandler={searchHandler} altImage={altImage} isPending={isPending}></Cards>
+            searchHandler={searchHandler} altImage={altImage} isPending={isPending} addNewHandler={redirectToAddActorHandler}></Cards>
     </div> 
 } 
 export default ActorList;

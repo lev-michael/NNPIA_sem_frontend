@@ -16,7 +16,7 @@ const MovieCards = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [searchedText, setSearchedText] = useState("");
-    const [sort, setSort] = useState("title,asc");
+    const [sort, setSort] = useState("release_date,desc");
 
     const history = useHistory();
 
@@ -38,11 +38,11 @@ const MovieCards = () => {
                 if (response.ok) {
                     return response.json()
                 }
-                throw new Error(`Unable to get data: ${response.statusText}`)
             })
             .then(json => {
-                setTotalPages(json.totalPages)
-                setMovies(json.content)
+                setTotalPages(json.result.totalPages)
+                setMovies(json.result.content)
+                setError(null)
                 window.scrollTo({
                     left: 0,
                     top: 0,
@@ -78,12 +78,17 @@ const MovieCards = () => {
         history.push("/movies/" + movieId);
     };
 
+    const redirectToAddMovieHandler = () => {
+        history.push("/movie/add");
+    };
+
     return <div className="movie-detail">
         {error}
         <h2>Movie list</h2>
         <Cards data={movies} currentPage={currentPage} totalPages={totalPages} setPage={setPage}
             sortOptions={options} sortHandler={sortHandler} redirectToItem={redirectToMovieHandler}
-            searchHandler={searchHandler} isPending={isPending} altImage={altImage}></Cards>
+            searchHandler={searchHandler} isPending={isPending} altImage={altImage}
+            addNewHandler={redirectToAddMovieHandler}></Cards>
     </div>
 }
 
