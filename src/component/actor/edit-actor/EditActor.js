@@ -10,7 +10,6 @@ function EditActor() {
     const { id } = useParams();
 
     useLayoutEffect(() => {
-        console.log(id);
         fetch(`${process.env.REACT_APP_BASE_URI}/person/${id}`)
             .then((res) => res.json())
             .then((res) => {
@@ -47,7 +46,6 @@ function EditActor() {
     }
 
     const handleSelectChange = (event) => {
-        console.log(event);
         let newData = { ...data };
         const value = event.value;
         newData["gender"] = value
@@ -83,7 +81,7 @@ function EditActor() {
                     return response.json();
                 }
             })
-            .then(id => history.push("/actors/" + id))
+            .then(id => history.push("/actors/" + id.result))
 
     }
 

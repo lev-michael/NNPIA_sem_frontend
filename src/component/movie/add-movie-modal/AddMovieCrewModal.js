@@ -17,6 +17,8 @@ function AddMovieCrewModal({ modalIsOpen, closeModal, addHandler }) {
             marginRight: '-50%',
             transform: 'translate(-50%, -50%)',
             backgroundColor: '#121212',
+            height: '90%',
+            minWidth: '300px',
         },
         overlay: {
             backgroundColor: 'rgba(120, 120, 120, 0.75)',
@@ -51,7 +53,6 @@ function AddMovieCrewModal({ modalIsOpen, closeModal, addHandler }) {
     }
 
     const handleInputChange = (event) => {
-        console.log(event);
         const newData = { ...data };
         const value = event.target.value;
         const name = event.target.name;

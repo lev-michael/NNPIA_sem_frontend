@@ -16,6 +16,10 @@
     height: fit-content;
     max-height: 100%;
 
+    &--small{
+        padding: 0 5px;
+    }
+
     &:disabled{
         background-color: lightgray !important;
         color: gray;

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useLayoutEffect } from 'react';
 import { useAuth } from '../AuthContext';
 import Loader from '../loader/Loader';
 import MovieListItem from '../movie/movie-list/MovieListItem';
@@ -25,7 +25,7 @@ function MyRatings() {
         { id: 8, name: "Worst score", value: "score,asc" },
     ]
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         fetch(`${process.env.REACT_APP_BASE_URI}/rating/my-rating?page=${currentPage - 1}&size=20&sort=${sort.includes('score') ? sort : 'movie.' + sort}`, {
             method: 'POST',
             headers: {
@@ -48,7 +48,7 @@ function MyRatings() {
             .finally(() => {
                 setIsPending(false)
             });
-    }, [currentPage, sort, searchedText, user, update])
+    }, [currentPage, sort, searchedText, user, update,  userDetail.id])
 
     const setPage = (page) => {
         if (page > totalPages) {
@@ -102,7 +102,7 @@ function MyRatings() {
             <Sort options={sortOptions} selectedItemHandler={sortHandler}></Sort>
         </div>
         {isPending && <Loader />}
-        {error}
+        <div className="error">{error}</div>
         {ratings && ratings.map(movie => <MovieListItem key={movie.id} movie={movie} ratingUpdatedHandler={rateMovieHandler} />)}
         {!ratings.length && <h3 className='margin-element text--centered'>No movies rated yet.</h3>}
 

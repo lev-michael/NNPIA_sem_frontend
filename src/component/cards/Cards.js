@@ -16,7 +16,7 @@ const Cards = ({ data, currentPage, totalPages, setPage, sortHandler, sortOption
             <Search onChangeHandler={e => searchHandler(e.target.value)}></Search>
             <Sort options={sortOptions} selectedItemHandler={sortHandler}></Sort>
             {userDetail && userDetail.role === "ADMIN" && <div>
-                <button className="button button--red margin-element" onClick={addNewHandler}>Add movie</button>
+                <button className="button button--red margin-element" onClick={addNewHandler}>Add</button>
             </div>}
         </div>
         {isPending && <Loader/>}

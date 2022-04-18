@@ -144,6 +144,37 @@ const MovieDetail = (() => {
         .catch(err => setError(err))
         .finally(setIsPending(false));
     }
+
+    const removeActor = (person_id) => {
+        setIsPending(true)
+        fetch(`${process.env.REACT_APP_BASE_URI}/movie/cast/remove`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem("tokens")}`
+            },
+            body: JSON.stringify({ person_id, movie_id: id })
+        })
+        .then(_ => setRefresh(true))
+        .catch(err => setError(err))
+        .finally(setIsPending(false));
+    }
+
+    const removeCrew = (person_id) => {
+        setIsPending(true)
+        fetch(`${process.env.REACT_APP_BASE_URI}/movie/crew/remove`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem("tokens")}`
+            },
+            body: JSON.stringify({ person_id, movie_id: id })
+        })
+        .then(_ => setRefresh(true))
+        .catch(err => setError(err))
+        .finally(setIsPending(false));
+    }
+
     const addCrew = (data) => {
         setIsPending(true)
         fetch(`${process.env.REACT_APP_BASE_URI}/movie/crew/add`, {
@@ -162,7 +193,7 @@ const MovieDetail = (() => {
 
     return <div className="movie-detail">
         {isPending && <Loader />}
-        {error}
+        <div className="error">{error}</div>
         {movie && (<div>
             <div className="flex flex--align-start">
                 <img style={{ borderRadius: "0.5rem" }} src={movie.img ? "http://image.tmdb.org/t/p/w300/" + movie.img : alterMovieImage} alt={movie.title}></img>
@@ -188,12 +219,12 @@ const MovieDetail = (() => {
                         <TextShowMore text={movie.description}></TextShowMore>
                     </div>
                 </div>
-                <div><button className="button button--red" onClick={redirectToEdit}>Edit</button></div>
+                {userDetail && userDetail.role === "ADMIN" && <div><button className='button button--red' onClick={redirectToEdit}>Edit</button></div>}
             </div>
-            {movie.actors && movie.actors.length > 0 && <h3 className="margin-element--top-large margin-element--left">Actors</h3>}
-            {movie.actors && <Scroller addActorHandler={addActor}  data={movie.actors} alterImage={alterPersonImage} redirectHandler={e => redirectToActorHandler(e)}></Scroller>}
-            {movie.crew && movie.crew.length > 0 && <h3 className="margin-element--top-large margin-element--left">Crew</h3>}
-            {movie.crew && <Scroller addCrewHandler={addCrew} data={movie.crew} alterImage={alterPersonImage} redirectHandler={redirectToActorHandler}></Scroller>}
+            {movie.actors && (movie.actors.length > 0 || userDetail.role === "ADMIN") && <h3 className="margin-element--top-large margin-element--left">Actors</h3>}
+            {movie.actors && <Scroller addActorHandler={addActor} removeHandler={removeActor} data={movie.actors} alterImage={alterPersonImage} redirectHandler={e => redirectToActorHandler(e)}></Scroller>}
+            {movie.crew && (movie.crew.length > 0 || userDetail.role === "ADMIN") && <h3 className="margin-element--top-large margin-element--left">Crew</h3>}
+            {movie.crew && <Scroller addCrewHandler={addCrew} removeHandler={removeCrew} data={movie.crew} alterImage={alterPersonImage} redirectHandler={redirectToActorHandler}></Scroller>}
         </div>)
         }
     </div >

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useLayoutEffect } from 'react';
 import { useAuth } from '../AuthContext';
 import Pagination from '../pagination/Pagination';
 import Search from '../search/Search';
@@ -18,7 +18,7 @@ function Watchlist() {
     const [sort, setSort] = useState("title,asc");
     const [update, setUpdate] = useState(false);
 
-    const { user, userDetail } = useAuth()
+    const { user, userDetail } = useAuth()    
 
     const options = [
         { id: 1, name: "Title A-Z", value: "title,asc" },
@@ -29,8 +29,8 @@ function Watchlist() {
         { id: 6, name: "Shortest runtime", value: "runtime,asc" },
     ]
 
-
-    useEffect(() => {
+    useLayoutEffect(() => {
+        setIsPending(true)
         fetch(`${process.env.REACT_APP_BASE_URI}/watchlist/list?page=${currentPage - 1}&size=20&sort=movie.${sort}`, {
             method: 'POST',
             headers: {
@@ -53,7 +53,7 @@ function Watchlist() {
             .finally(() => {
                 setIsPending(false)
             });
-    }, [currentPage, sort, user, searchedText])
+    }, [currentPage, sort, user, searchedText, update, userDetail.id])
 
     const searchHandler = (text) => {
         setSearchedText(text);
@@ -98,7 +98,7 @@ function Watchlist() {
 
     return <div className='actor-detail'>
         {isPending && <Loader />}
-        {error}
+        <div className="error">{error}</div>
         <h2 className='margin-element--large'>My watchlist</h2>
         <div className="flex flex--justify-center flex--wrap">
             <Search onChangeHandler={e => searchHandler(e.target.value)}></Search>

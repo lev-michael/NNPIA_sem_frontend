@@ -38,9 +38,10 @@ export default function LoginForm() {
       .then(json => {
         setTokens(json.token);
         setLoggedIn(true);
+        setIsError(null)
       })
       .catch((err) => {
-        setIsError(err.message)
+        setIsError("Wrong username or password")
       })
 
   }
@@ -57,10 +58,10 @@ export default function LoginForm() {
         <input className="input" type={"text"} name={"username"} onChange={handleInputChange} />
         <label htmlFor="password">Password</label>
         <input className="input" type={"password"} name={"password"} onChange={handleInputChange} />
+        <div className="error">{isError}</div>
         <div className="flex flex--justify-end">
           <button className="button button--red margin-element--top">Login</button>
         </div>
-        {isError}
       </form>
     </div>
 

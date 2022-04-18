@@ -3,6 +3,7 @@ import { useLayoutEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import Select from "react-select";
+import Loader from "../../loader/Loader";
 
 function EditMovie() {
     const [data, setData] = useState({});
@@ -13,6 +14,7 @@ function EditMovie() {
     const { id } = useParams();
 
     useLayoutEffect(() => {
+        setIsPending(true)
         Promise.all(
             [fetch(`${process.env.REACT_APP_BASE_URI}/movie/${id}`),
             fetch(`${process.env.REACT_APP_BASE_URI}/genre/list`)]
@@ -34,7 +36,6 @@ function EditMovie() {
                     "genres": genres.filter(genre =>  movie.genres.includes(genre.label)).map(genre => genre.value),
                     "id": movie.id
                 }
-                console.log(newData);
                 setData({ ...newData })
             })
             .catch((err) => setError(err.message))
@@ -52,7 +53,6 @@ function EditMovie() {
     const handleSelectChange = (event) => {
         const value = event.map(genre => genre.value);
         data["genres"] = value
-        console.log(data);
         setData({ ...data })
     }
 
@@ -80,6 +80,7 @@ function EditMovie() {
 
     const editMovie = (event) => {
         event.preventDefault()
+        setIsPending(true)
         fetch(`${process.env.REACT_APP_BASE_URI}/movie/edit`, {
             method: 'POST',
             headers: {
@@ -93,12 +94,14 @@ function EditMovie() {
                     return response.json();
                 }
             })
-            .then(id => history.push("/movies/" + id))
+            .then(id => history.push("/movies/" + id.result))
+            .finally(_ => setIsPending(false))
 
     }
 
     return <div className="login-form">
         <h2>Edit movie</h2>
+        {isPending && <Loader/>}
         <form>
             <label htmlFor="title">Title</label>
             <input className="input" type={"text"} name={"title"} onChange={handleInputChange} value={data["title"]}/>
@@ -115,7 +118,7 @@ function EditMovie() {
             <div className="flex flex--justify-end">
                 <button className="button button--red margin-element--top" disabled={!formValid()} onClick={editMovie}>Edit</button>
             </div>
-            {isError}
+            <div className="error">{isError}</div>
         </form>
     </div>;
 }

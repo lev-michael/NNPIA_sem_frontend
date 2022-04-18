@@ -1,5 +1,7 @@
 import { useLayoutEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import Select from 'react-select';
+import Loader from "../../loader/Loader";
 import "./AddMovie.scss";
 
 function AddMovie() {
@@ -7,6 +9,8 @@ function AddMovie() {
     const [genres, setGenres] = useState([]);
     const [isError, setError] = useState(false);
     const [isPending, setIsPending] = useState(true)
+    const history = useHistory();
+
 
     useLayoutEffect(() => {
         setIsPending(true);
@@ -79,14 +83,17 @@ function AddMovie() {
             .then(response => {
                 if (response.ok) {
                     setError(null);
+                    return response.json();
                 }
             })
+            .then(id => history.push("/movies/" + id.result))
             .catch((err) => setError(err.message))
             .finally(_ => setIsPending(false))
     }
 
     return <div className="login-form">
         <h2>Add movie</h2>
+        {isPending && <Loader/>}
         <form>
             <label htmlFor="title">Title</label>
             <input className="input" type={"text"} name={"title"} onChange={handleInputChange} />
@@ -103,7 +110,7 @@ function AddMovie() {
             <div className="flex flex--justify-end">
                 <button className="button button--red margin-element--top" disabled={!formValid()} onClick={addMovie}>Add</button>
             </div>
-            {isError}
+            <div className="error">{isError}</div>
         </form>
     </div>;
 }

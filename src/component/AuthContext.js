@@ -7,10 +7,11 @@ const getUser = (token) => (token && jwt_decode(token));
 const AuthContext = createContext();
 
 function AuthProvider({ children }) {
+  const [loggedIn, setLoggedIn] = useState(false);
 
   const removeTokens = () => {
     localStorage.removeItem("tokens");
-
+    setLoggedIn(false);
     setState({
       status: 'success',
       error: null,
@@ -31,6 +32,7 @@ function AuthProvider({ children }) {
   const setTokens = (data) => {
     localStorage.setItem("tokens", data);
     setAuthTokens(data);
+    setLoggedIn(true);
     const user = getUser(data);
     setState({
       status: 'success',
@@ -64,10 +66,11 @@ function AuthProvider({ children }) {
         })
         .then(res => res.json())
         .then(res => setUserDetail(res.result))
-        .catch((error) => console.log('An error occurred')
-        )
+        .catch((error) => setUserDetail(null))
+    } else {
+      setUserDetail(null);
     }
-  }, [])
+  }, [loggedIn])
 
   useEffect(() => {
     const user = getUser(localStorage.getItem("tokens"));

@@ -17,6 +17,8 @@ function AddMovieActorModal({ modalIsOpen, closeModal, addHandler }) {
             marginRight: '-50%',
             transform: 'translate(-50%, -50%)',
             backgroundColor: '#121212',
+            height: '90%',
+            minWidth: '300px',
         },
         overlay: {
             backgroundColor: 'rgba(120, 120, 120, 0.75)',

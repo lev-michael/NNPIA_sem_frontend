@@ -83,7 +83,7 @@ const MovieCards = () => {
     };
 
     return <div className="movie-detail">
-        {error}
+        <div className="error">{error}</div>
         <h2>Movie list</h2>
         <Cards data={movies} currentPage={currentPage} totalPages={totalPages} setPage={setPage}
             sortOptions={options} sortHandler={sortHandler} redirectToItem={redirectToMovieHandler}

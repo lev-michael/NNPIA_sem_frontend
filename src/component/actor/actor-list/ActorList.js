@@ -77,7 +77,7 @@ const ActorList = () => {
     };
 
     return <div className="actor-detail">
-        {error}
+        <div className="error">{error}</div>
         <h2 cl>Actor list</h2>
         <Cards data={actors} currentPage={currentPage} totalPages={totalPages} setPage={setPage}
             sortOptions={options} sortHandler={sortHandler} redirectToItem={redirectToActorHandler}

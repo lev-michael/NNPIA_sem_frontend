@@ -2,18 +2,20 @@ import "./Scroller.scss"
 import moment from "moment"
 import "react-sweet-progress/lib/style.css";
 import ProgressCircle from "../progress-circle/ProgressCircle";
-import Modal from "react-modal/lib/components/Modal";
 import { useState } from "react";
 import AddActorModal from "../actor/add-person-modal/AddActorModal";
 import AddCrewModal from "../actor/add-person-modal/AddCrewModal";
 import AddMovieActorModal from "../movie/add-movie-modal/AddMovieActorModal";
 import AddMovieCrewModal from "../movie/add-movie-modal/AddMovieCrewModal";
+import { useAuth } from "../AuthContext";
 
 const Scroller = ({ data, alterImage, redirectHandler, addActorHandler, addCrewHandler, addMovieActorHandler, addMovieCrewHandler, removeHandler }) => {
     const [actorModalIsOpen, setActorModalIsOpen] = useState(false);
     const [crewModalIsOpen, setCrewModalIsOpen] = useState(false);
     const [movieActorModalIsOpen, setMovieActorModalIsOpen] = useState(false);
     const [movieCrewModalIsOpen, setMovieCrewModalIsOpen] = useState(false);
+    const { userDetail } = useAuth()
+
 
     const openModal = () => {
         if (addActorHandler)
@@ -37,8 +39,14 @@ const Scroller = ({ data, alterImage, redirectHandler, addActorHandler, addCrewH
             setMovieCrewModalIsOpen(false);
     }
 
+    const remove = (event, id) =>{
+        event.stopPropagation();
+        event.preventDefault();
+        removeHandler(id);
+    }
+
     return <ol className="scroller">
-        {(addActorHandler || addCrewHandler || addMovieActorHandler || addMovieCrewHandler) && <li className="item">
+        {(addActorHandler || addCrewHandler || addMovieActorHandler || addMovieCrewHandler) &&  userDetail && userDetail.role === "ADMIN" &&<li className="item">
             <div className="item--add flex flex--centered" onClick={openModal}>
                 <div className="circle"></div>
             </div>
@@ -59,8 +67,8 @@ const Scroller = ({ data, alterImage, redirectHandler, addActorHandler, addCrewH
                         {item.title !== undefined && <p className="text text--label">{item.title}</p>}
                         {item.release_date !== undefined && <p className="text text--label">{moment(item.release_date).format("DD. MM. YYYY")}</p>}
                     </div>
-                    <div className="margin-element--top-small margin-element--right-small">
-                        {removeHandler && <div className="button button--red">X</div>}
+                    <div className="margin-element--top-small">
+                        {removeHandler && userDetail && userDetail.role === "ADMIN" && <div className="button button--small button--red" onClick={e => remove(e, item.id)}>X</div>}
                         {item.avgScore && <ProgressCircle score={item.avgScore} />}
                     </div>
                 </div>

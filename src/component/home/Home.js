@@ -45,7 +45,7 @@ function Home() {
     return <div>
         <h1 className="text--centered margin-element">Welcome to Movie database!</h1>
         {isPending && <Loader />}
-        {error}
+        <div className="error">{error}</div>
         <h3>Recommended movie: </h3>
         <MovieListItem movie={randomMovie}/>
         {bestMovies && bestMovies.length > 0 && <div>

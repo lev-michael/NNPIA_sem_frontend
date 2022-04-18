@@ -25,7 +25,6 @@ function AddActor({actor}) {
     }
 
     const handleSelectChange = (event) => {
-        console.log(event);
         let newData = {...data};
         const value = event.value;
         newData["gender"] = value
@@ -61,7 +60,7 @@ function AddActor({actor}) {
                     return response.json();
                 }
             })
-            .then(id => history.push("/actors/"+id))
+            .then(id => history.push("/actors/" + id.result))
 
     }
 
