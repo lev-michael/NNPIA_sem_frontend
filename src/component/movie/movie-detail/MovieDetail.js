@@ -221,9 +221,9 @@ const MovieDetail = (() => {
                 </div>
                 {userDetail && userDetail.role === "ADMIN" && <div><button className='button button--red' onClick={redirectToEdit}>Edit</button></div>}
             </div>
-            {movie.actors && (movie.actors.length > 0 || userDetail.role === "ADMIN") && <h3 className="margin-element--top-large margin-element--left">Actors</h3>}
+            {movie.actors && (movie.actors.length > 0 || (userDetail && userDetail.role === "ADMIN")) && <h3 className="margin-element--top-large margin-element--left">Actors</h3>}
             {movie.actors && <Scroller addActorHandler={addActor} removeHandler={removeActor} data={movie.actors} alterImage={alterPersonImage} redirectHandler={e => redirectToActorHandler(e)}></Scroller>}
-            {movie.crew && (movie.crew.length > 0 || userDetail.role === "ADMIN") && <h3 className="margin-element--top-large margin-element--left">Crew</h3>}
+            {movie.crew && (movie.crew.length > 0 || (userDetail && userDetail.role === "ADMIN")) && <h3 className="margin-element--top-large margin-element--left">Crew</h3>}
             {movie.crew && <Scroller addCrewHandler={addCrew} removeHandler={removeCrew} data={movie.crew} alterImage={alterPersonImage} redirectHandler={redirectToActorHandler}></Scroller>}
         </div>)
         }

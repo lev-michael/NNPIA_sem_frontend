@@ -120,9 +120,9 @@ function ActorDetail() {
             {userDetail && userDetail.role === "ADMIN" && <div><button className='button button--red' onClick={redirectToEdit}>Edit</button></div>}
         </div>}
 
-        {actor && (actor.cast_movies.length > 0 || userDetail.role === "ADMIN") && <h4>Act in:</h4>}
+        {actor && (actor.cast_movies.length > 0 || (userDetail && userDetail.role === "ADMIN")) && <h4>Act in:</h4>}
         {actor && actor.cast_movies && <Scroller removeHandler={removeCast} addMovieActorHandler={addActorMovie} data={actor.cast_movies} redirectHandler={e => redirectToMovieHandler(e)}></Scroller>}
-        {actor && (actor.crew_movies.length > 0 || userDetail.role === "ADMIN") && <h4>Participated in creation of:</h4>}
+        {actor && (actor.crew_movies.length > 0 || (userDetail && userDetail.role === "ADMIN")) && <h4>Participated in creation of:</h4>}
         {actor && actor.crew_movies && <Scroller addMovieCrewHandler={addCrewMovie} removeHandler={removeCrew} data={actor.crew_movies} redirectHandler={e => redirectToMovieHandler(e)}></Scroller>}
     </div>;
 }
