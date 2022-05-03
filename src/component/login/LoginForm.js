@@ -55,12 +55,12 @@ export default function LoginForm() {
       <h2>Login to your account</h2>
       <form onSubmit={postLogin}>
         <label htmlFor="username">Username</label>
-        <input className="input" type={"text"} name={"username"} onChange={handleInputChange} />
+        <input id="username" className="input" type={"text"} name={"username"} onChange={handleInputChange} />
         <label htmlFor="password">Password</label>
         <input className="input" type={"password"} name={"password"} onChange={handleInputChange} />
         <div className="error">{isError}</div>
         <div className="flex flex--justify-end">
-          <button className="button button--red margin-element--top">Login</button>
+          <button className="button margin-element--top">Login</button>
         </div>
       </form>
     </div>
