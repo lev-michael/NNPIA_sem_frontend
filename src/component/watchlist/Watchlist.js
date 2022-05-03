@@ -31,8 +31,14 @@ function Watchlist() {
 
     useLayoutEffect(() => {
         setIsPending(true)
-        fetch(`${process.env.REACT_APP_BASE_URI}/watchlist/list?page=${currentPage - 1}&size=20&sort=movie.${sort}&query=${searchedText}`)
-            .then(response => {
+        fetch(`${process.env.REACT_APP_BASE_URI}/watchlist/list?page=${currentPage - 1}&size=20&sort=movie.${sort}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem("tokens")}`
+            },
+            body: JSON.stringify({ userId: userDetail.id, query: searchedText ?? "" })
+        })            .then(response => {
                 if (response.ok) {
                     return response.json()
                 }
