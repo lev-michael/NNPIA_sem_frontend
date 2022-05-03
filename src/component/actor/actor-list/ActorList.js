@@ -22,13 +22,7 @@ const ActorList = () => {
     ]
 
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_BASE_URI}/person/actors/list?page=${currentPage - 1}&size=20&sort=${sort}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ query: searchedText ?? "" })
-        })
+        fetch(`${process.env.REACT_APP_BASE_URI}/person/actors/list?page=${currentPage - 1}&size=20&sort=${sort}&query=${searchedText}`)
             .then(response => {
                 if (response.ok) {
                     return response.json()
