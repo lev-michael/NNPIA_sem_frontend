@@ -27,13 +27,7 @@ const MovieCards = () => {
     ]
 
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_BASE_URI}/movie/list?page=${currentPage - 1}&size=20&sort=${sort}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ query: searchedText ?? "" })
-        })
+        fetch(`${process.env.REACT_APP_BASE_URI}/movie/list?query=${searchedText}&page=${currentPage - 1}&size=20&sort=${sort}`)
             .then(response => {
                 if (response.ok) {
                     return response.json()
